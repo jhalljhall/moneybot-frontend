@@ -5,7 +5,7 @@ import { API_URL, REFRESH_ENDPOINT } from './auth.constants';
 const client = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/json'
   }
 });
 
@@ -74,6 +74,7 @@ client.interceptors.response.use(
 //   }
 
   const request = (opts) => {
+    console.debug('Request send!', opts);
     let options = {
       ...opts,
       headers: authHeader()

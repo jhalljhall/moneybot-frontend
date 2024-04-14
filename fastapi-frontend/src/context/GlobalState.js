@@ -2,6 +2,7 @@ import { createContext, useReducer, useContext } from 'react';
 // Define the initial state
 const initialState = {
   user: null,
+  chatHistory: null,
 };
 // Create a context object
 const GlobalStateContext = createContext();
@@ -11,6 +12,8 @@ function reducer(state, action) {
       return { ...state, user: action.payload };
     case 'LOGOUT_USER':
       return { ...state, user: null };
+    case 'UPDAT_CHAT':
+      return { ...state, chatHistory: [...chatHistory, action.payload] };
     default:
       return state;
   }

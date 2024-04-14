@@ -1,6 +1,6 @@
 export default function authHeader() {
     let header_obj = {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json'
     }
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.access) {
