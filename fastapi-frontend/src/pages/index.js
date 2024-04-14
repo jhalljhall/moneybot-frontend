@@ -18,12 +18,17 @@ export default function Home() {
   const [localState, setLocalState] =  useState([]);
   const [inputValue, setInputValue] =  useState({});
   const [currentStream, setCurrentStream] =  useState("");
-  const [prompts, setPrompts] = useState([]);
+  const [prompts, setPrompts] = useState([
+    {"prompt":"What is revenue?"},
+    {"prompt":"What is cashflow?"},
+    {"prompt":"What is a dividend?"},
+    {"prompt":"What is compounding interest?"}
+  ]);
   useEffect(() => {
     const geChatFromLocalStorage = () => {
       const chatData = localStorage.getItem('moneybot');
-      if (chatData) {
-        setLocalState(chatData);
+      if (chatData && chatData != "") {
+        setLocalState(JSON.parse(chatData));
       }
     };
     setPrompts([
@@ -33,10 +38,11 @@ export default function Home() {
       {"prompt":"What is compounding interest?"}
     ]);
 
-    geChatFromLocalStorage();
+    //geChatFromLocalStorage();
   }, []);
+
   useEffect(() => {
-    localStorage.setItem('moneybot', currentStream);
+    localStorage.setItem('moneybot', JSON.stringify(currentStream));
   }, [currentStream]);
 
   function sleep(milliseconds) {
@@ -64,8 +70,7 @@ export default function Home() {
       .sendData({
         data: inputValue,
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          // "Authorization":"Bearer " + globalState.user.user_id
+          "Content-Type": "application/json",
         }
       })
       .then(async (resp) => {
@@ -77,7 +82,7 @@ export default function Home() {
                 if(data[i] != ""){
                   let m = JSON.parse(data[i]);
                   if(m){
-                    console.log(m.message);
+                    
                     str = str + m.message;
                   }
                 }
@@ -131,7 +136,6 @@ export default function Home() {
     console.log(prompts[num]);
     let str = prompts[num].prompt;    
     setInputValue(str);
-    setCurrentStream("")
   };
 
 
@@ -144,16 +148,16 @@ export default function Home() {
           <div className="container">
             <div className="row">
               <div className="col-12 col-md-3">
-                <button onClick={()=> chooseFromChoices(1)}>Say Hello</button>
+                <button onClick={()=> chooseFromChoices(0)}>{prompts[0].prompt}</button>
               </div>
               <div className="col-12 col-md-3">
-                <button onClick={()=> chooseFromChoices(2)}>Say Hello2</button>
+                <button onClick={()=> chooseFromChoices(1)}>{prompts[1].prompt}</button>
               </div>
               <div className="col-12 col-md-3">
-                <button onClick={()=> chooseFromChoices(3)}>Say Hello3</button>
+                <button onClick={()=> chooseFromChoices(2)}>{prompts[2].prompt}</button>
               </div>
               <div className="col-12 col-md-3">
-                <button onClick={()=> chooseFromChoices(4)}>Say Hello4</button>
+                <button onClick={()=> chooseFromChoices(3)}>{prompts[3].prompt}</button>
               </div>
             </div>
             <div className="row">
